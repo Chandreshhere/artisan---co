@@ -2627,26 +2627,47 @@
             observer.observe(featured);
         })();
 
-        function handleBooking(e) {
+        async function handleBooking(e) {
             e.preventDefault();
             const form = e.target;
+            const submitBtn = form.querySelector('.form-submit');
+            const originalBtnText = submitBtn ? submitBtn.textContent : '';
             const formData = new FormData(form);
 
-            const name = formData.get('name');
-            const phone = formData.get('phone');
-            const email = formData.get('email') || '';
-            const type = formData.get('type');
-            const message = formData.get('message') || '';
+            const payload = {
+                name: formData.get('name'),
+                phone: formData.get('phone'),
+                email: formData.get('email') || '',
+                type: formData.get('type'),
+                message: formData.get('message') || '',
+            };
 
-            // Build Instagram DM message
-            const dmText = `Hi Manya! I'd like to book a ${type}.%0A%0AName: ${name}%0APhone: ${phone}${email ? '%0AEmail: ' + email : ''}${message ? '%0A%0ADetails: ' + message : ''}`;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+            }
 
-            // Open Instagram DM with pre-filled message
-            setTimeout(() => {
-                window.open(`https://ig.me/m/artisan_and_co_`, '_blank');
-            }, 1000);
-
-            form.reset();
+            try {
+                const res = await fetch('/api/booking', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.ok) {
+                    throw new Error(data.error || 'Request failed');
+                }
+                alert('Thank you! Your booking request has been sent. Manya will get back to you soon.');
+                form.reset();
+            } catch (err) {
+                console.error('Booking submit failed:', err);
+                alert('Sorry, we could not send your request right now. Please try again or DM us on Instagram.');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                }
+            }
         }
 
         // ==================== REFRESH SCROLL TRIGGER ON RESIZE ====================
