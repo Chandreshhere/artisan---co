@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.instagram.com)",
+      "Bash(/Users/moon/Library/Python/3.14/bin/instaloader --no-videos --no-captions --no-metadata-json --no-compress-json --count 6 --dirname-pattern=. -- \"artisan_and_co_\")"
+    ]
+  }
+}
