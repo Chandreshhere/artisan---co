@@ -18,6 +18,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
     <script src="https://unpkg.com/lenis@1.1.1/dist/lenis.min.js"></script>
 
+    <!-- Preload gallery images so horizontal scroll has no jitter -->
+    <link rel="preload" as="image" href="images/WhatsApp Image 2026-04-05 at 11.50.25 (1).jpeg">
+    <link rel="preload" as="image" href="images/WhatsApp Image 2026-04-05 at 11.50.28.jpeg">
+    <link rel="preload" as="image" href="images/WhatsApp Image 2026-04-05 at 11.50.24.jpeg">
+    <link rel="preload" as="image" href="images/WhatsApp Image 2026-04-05 at 11.50.26 (2).jpeg">
+    <link rel="preload" as="image" href="images/WhatsApp Image 2026-04-05 at 11.50.25 (3).jpeg">
+    <link rel="preload" as="image" href="images/WhatsApp Image 2026-04-05 at 11.50.27.jpeg">
+    <link rel="preload" as="image" href="images/WhatsApp Image 2026-04-05 at 11.50.24 (1).jpeg">
+    <link rel="preload" as="image" href="images/WhatsApp Image 2026-04-05 at 11.50.26.jpeg">
+    <link rel="preload" as="image" href="images/WhatsApp Image 2026-04-05 at 11.50.25 (2).jpeg">
+    <link rel="preload" as="image" href="images/WhatsApp Image 2026-04-05 at 11.50.28 (1).jpeg">
+
     <style>
         :root {
             --bg: #F5F0EB;
@@ -344,6 +356,16 @@
             display: block;
             transform: translateY(110%);
         }
+
+        /* Initial hidden states — prevents flash before hero animation runs */
+        .hero-badge,
+        .hero-subtitle,
+        .hero-cta {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .hero-scroll { opacity: 0; }
+        .hero-flower { opacity: 0; transform: scale(0); }
 
         .hero-subtitle {
             font-size: 1.1rem;
@@ -688,6 +710,8 @@
             background-color: #f5f0ec;
             overflow: hidden;
             z-index: 50;
+            touch-action: pan-y;
+            overscroll-behavior: contain;
         }
 
         .gallery-container {
@@ -710,11 +734,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transform: translateX(0%) scale(0.85);
             transform-origin: 10% center;
-            will-change: transform;
+            will-change: transform, opacity;
             overflow: hidden;
-            opacity: 0;
+            backface-visibility: hidden;
         }
 
         .gallery-header-big h1 {
@@ -755,6 +778,8 @@
             will-change: transform;
             box-shadow: 0 20px 50px rgba(0,0,0,0.18);
             z-index: 3;
+            backface-visibility: hidden;
+            transform: translateZ(0);
         }
 
         .gallery-img img {
@@ -1826,16 +1851,16 @@
                     </svg>
                 </div>
 
-                <div class="gallery-img" id="gallery-img-1"><img src="images/WhatsApp Image 2026-04-05 at 11.50.25 (1).jpeg" alt="Gallery" loading="lazy"></div>
-                <div class="gallery-img" id="gallery-img-2"><img src="images/WhatsApp Image 2026-04-05 at 11.50.28.jpeg" alt="Gallery" loading="lazy"></div>
-                <div class="gallery-img" id="gallery-img-3"><img src="images/WhatsApp Image 2026-04-05 at 11.50.24.jpeg" alt="Gallery" loading="lazy"></div>
-                <div class="gallery-img" id="gallery-img-4"><img src="images/WhatsApp Image 2026-04-05 at 11.50.26 (2).jpeg" alt="Gallery" loading="lazy"></div>
-                <div class="gallery-img" id="gallery-img-5"><img src="images/WhatsApp Image 2026-04-05 at 11.50.25 (3).jpeg" alt="Gallery" loading="lazy"></div>
-                <div class="gallery-img" id="gallery-img-6"><img src="images/WhatsApp Image 2026-04-05 at 11.50.27.jpeg" alt="Gallery" loading="lazy"></div>
-                <div class="gallery-img" id="gallery-img-7"><img src="images/WhatsApp Image 2026-04-05 at 11.50.24 (1).jpeg" alt="Gallery" loading="lazy"></div>
-                <div class="gallery-img" id="gallery-img-8"><img src="images/WhatsApp Image 2026-04-05 at 11.50.26.jpeg" alt="Gallery" loading="lazy"></div>
-                <div class="gallery-img" id="gallery-img-9"><img src="images/WhatsApp Image 2026-04-05 at 11.50.25 (2).jpeg" alt="Gallery" loading="lazy"></div>
-                <div class="gallery-img" id="gallery-img-10"><img src="images/WhatsApp Image 2026-04-05 at 11.50.28 (1).jpeg" alt="Gallery" loading="lazy"></div>
+                <div class="gallery-img" id="gallery-img-1"><img src="images/WhatsApp Image 2026-04-05 at 11.50.25 (1).jpeg" alt="Gallery" decoding="async" fetchpriority="high"></div>
+                <div class="gallery-img" id="gallery-img-2"><img src="images/WhatsApp Image 2026-04-05 at 11.50.28.jpeg" alt="Gallery" decoding="async" fetchpriority="high"></div>
+                <div class="gallery-img" id="gallery-img-3"><img src="images/WhatsApp Image 2026-04-05 at 11.50.24.jpeg" alt="Gallery" decoding="async" fetchpriority="high"></div>
+                <div class="gallery-img" id="gallery-img-4"><img src="images/WhatsApp Image 2026-04-05 at 11.50.26 (2).jpeg" alt="Gallery" decoding="async" fetchpriority="high"></div>
+                <div class="gallery-img" id="gallery-img-5"><img src="images/WhatsApp Image 2026-04-05 at 11.50.25 (3).jpeg" alt="Gallery" decoding="async" fetchpriority="high"></div>
+                <div class="gallery-img" id="gallery-img-6"><img src="images/WhatsApp Image 2026-04-05 at 11.50.27.jpeg" alt="Gallery" decoding="async" fetchpriority="high"></div>
+                <div class="gallery-img" id="gallery-img-7"><img src="images/WhatsApp Image 2026-04-05 at 11.50.24 (1).jpeg" alt="Gallery" decoding="async" fetchpriority="high"></div>
+                <div class="gallery-img" id="gallery-img-8"><img src="images/WhatsApp Image 2026-04-05 at 11.50.26.jpeg" alt="Gallery" decoding="async" fetchpriority="high"></div>
+                <div class="gallery-img" id="gallery-img-9"><img src="images/WhatsApp Image 2026-04-05 at 11.50.25 (2).jpeg" alt="Gallery" decoding="async" fetchpriority="high"></div>
+                <div class="gallery-img" id="gallery-img-10"><img src="images/WhatsApp Image 2026-04-05 at 11.50.28 (1).jpeg" alt="Gallery" decoding="async" fetchpriority="high"></div>
             </div>
         </div>
     </section>
@@ -2088,9 +2113,9 @@
                 duration: 1,
                 ease: 'power4.inOut',
                 delay: 0.3,
+                onStart: animateHero,
                 onComplete: () => {
                     document.getElementById('preloader').style.display = 'none';
-                    animateHero();
                 }
             });
 
@@ -2133,21 +2158,24 @@
                     stagger: 0.15,
                     ease: 'power4.out'
                 }, 0.1)
-                .from('.hero-subtitle', {
-                    opacity: 0, y: 30, duration: 0.8, ease: 'power3.out'
+                .to('.hero-subtitle', {
+                    opacity: 1, y: 0, duration: 0.8, ease: 'power3.out'
                 }, 0.8)
-                .from('.hero-cta', {
-                    opacity: 0, y: 30, duration: 0.8, ease: 'power3.out'
+                .to('.hero-cta', {
+                    opacity: 1, y: 0, duration: 0.8, ease: 'power3.out'
                 }, 1)
-                .from('.hero-scroll', {
-                    opacity: 0, duration: 1, ease: 'power2.out'
+                .to('.hero-scroll', {
+                    opacity: 1, duration: 1, ease: 'power2.out'
                 }, 1.2);
 
-            // Animate hero flowers
-            gsap.from('.hero-flower', {
-                scale: 0,
-                opacity: 0,
-                rotation: () => gsap.utils.random(-60, 60),
+            // Seed random rotation per flower, then animate in
+            document.querySelectorAll('.hero-flower').forEach(el => {
+                gsap.set(el, { rotation: gsap.utils.random(-60, 60) });
+            });
+            gsap.to('.hero-flower', {
+                scale: 1,
+                opacity: 1,
+                rotation: 0,
                 duration: 1.2,
                 stagger: {
                     each: 0.1,
@@ -2309,6 +2337,22 @@
             const rollingCircle = document.getElementById('galleryRollingCircle');
             if (!section || !container || !scrollEl) return;
 
+            // Decode all gallery images up-front so the pan animation never reflows mid-scroll
+            const galleryImages = Array.from(section.querySelectorAll('.gallery-img img'));
+            const decodePromises = galleryImages.map((img) => {
+                if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+                if (typeof img.decode === 'function') {
+                    return img.decode().catch(() => {});
+                }
+                return new Promise((resolve) => {
+                    img.addEventListener('load', resolve, { once: true });
+                    img.addEventListener('error', resolve, { once: true });
+                });
+            });
+            Promise.all(decodePromises).then(() => {
+                ScrollTrigger.refresh();
+            });
+
             const isMobile = window.innerWidth < 1000;
             const imagesData = isMobile
                 ? [
@@ -2338,54 +2382,75 @@
 
             const imageEls = imagesData.map(img => section.querySelector(img.id));
 
-            // Circle clip-path reveal
+            // Prime initial state via GSAP (avoid CSS/JS fighting for transform)
+            gsap.set(scrollEl, {
+                opacity: 0,
+                scale: 0.85,
+                x: 0,
+                transformOrigin: '10% center',
+                force3D: true,
+            });
+            imageEls.forEach(el => {
+                if (el) gsap.set(el, { x: 0, force3D: true });
+            });
+            if (rollingCircle) gsap.set(rollingCircle, { rotation: 0, force3D: true });
+
+            // Circle clip-path reveal (unchanged — simple scrub)
             ScrollTrigger.create({
                 trigger: section,
                 start: 'top bottom',
                 end: `bottom+=${window.innerHeight} top`,
-                scrub: 1,
+                scrub: 1.2,
                 onUpdate: (self) => {
                     const clipPathValue = Math.min(self.progress * 150, 100);
                     container.style.clipPath = `circle(${clipPathValue}% at 50% 50%)`;
                 }
             });
 
-            // Main pin + horizontal pan + per-image parallax
-            ScrollTrigger.create({
-                trigger: section,
-                start: 'top top',
-                end: `+=${window.innerHeight * (isMobile ? 1.3 : 2.5)}`,
-                pin: true,
-                pinSpacing: true,
-                scrub: 1,
-                anticipatePin: 0.5,
-                invalidateOnRefresh: true,
-                onUpdate: (self) => {
-                    const maxTranslateX = scrollEl.offsetWidth - window.innerWidth;
-                    const progress = self.progress;
-
-                    if (progress <= 0.05) {
-                        const fadeProgress = progress / 0.05;
-                        scrollEl.style.opacity = fadeProgress;
-                        scrollEl.style.transform = `scale(${0.85 + 0.15 * fadeProgress}) translateX(0px)`;
-                    } else {
-                        const adjustedProgress = (progress - 0.05) / 0.95;
-                        const translateX = -Math.min(adjustedProgress * maxTranslateX, maxTranslateX);
-                        scrollEl.style.opacity = 1;
-                        scrollEl.style.transform = `scale(1) translateX(${translateX}px)`;
-
-                        imageEls.forEach((el, idx) => {
-                            if (el) {
-                                el.style.transform = `translateX(${imagesData[idx].endTranslateX * adjustedProgress}px)`;
-                            }
-                        });
-
-                        if (rollingCircle) {
-                            rollingCircle.style.transform = `rotate(${adjustedProgress * 720}deg)`;
-                        }
-                    }
+            // Main pin + horizontal pan + per-image parallax — timeline-based for smoother scrub
+            const tl = gsap.timeline({
+                defaults: { ease: 'none', force3D: true },
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top top',
+                    end: `+=${window.innerHeight * (isMobile ? 2.2 : 3.2)}`,
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: isMobile ? 1.5 : 2,
+                    anticipatePin: 1,
+                    invalidateOnRefresh: true,
                 }
             });
+
+            // Phase 1 (0 → 8%): fade in + scale to 1
+            tl.to(scrollEl, {
+                opacity: 1,
+                scale: 1,
+                duration: 0.08,
+            }, 0);
+
+            // Phase 2 (8% → 100%): pan horizontally + parallax + rolling circle
+            const panDuration = 0.92;
+
+            tl.to(scrollEl, {
+                x: () => -(scrollEl.offsetWidth - window.innerWidth),
+                duration: panDuration,
+            }, 0.08);
+
+            imageEls.forEach((el, idx) => {
+                if (!el) return;
+                tl.to(el, {
+                    x: imagesData[idx].endTranslateX,
+                    duration: panDuration,
+                }, 0.08);
+            });
+
+            if (rollingCircle) {
+                tl.to(rollingCircle, {
+                    rotation: 720,
+                    duration: panDuration,
+                }, 0.08);
+            }
         })();
 
         // ==================== PROCESS ANIMATIONS ====================
